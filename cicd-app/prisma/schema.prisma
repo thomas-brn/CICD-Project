@@ -14,7 +14,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model city {
+model City {
  id Int @id 
  department_code String 
  insee_code String?
@@ -22,4 +22,6 @@ model city {
  name String
  lat Float
  lon Float
+
+ @@map("city")
 }

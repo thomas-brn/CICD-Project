@@ -15,7 +15,7 @@ generator client {
 }
 
 model City {
- id Int @id 
+ id Int @id @default(autoincrement())
  department_code String 
  insee_code String?
  zip_code String?

@@ -12,6 +12,10 @@ export class CityService {
     return `This action returns all city`;
   }
 
+  healthCheck() {
+    return `This action returns the health of the service`;
+  }
+
   findOne(id: number) {
     return `This action returns a #${id} city`;
   }

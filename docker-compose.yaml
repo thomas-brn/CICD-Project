@@ -10,7 +10,12 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   app:
-    build: .
+    build:
+      context: ./cicd-app
+      dockerfile: Dockerfile
+      tags:
+        - baraly/plannify-back:0.1.0
+    restart: always
     ports:
       - "3000:3000"
     depends_on:

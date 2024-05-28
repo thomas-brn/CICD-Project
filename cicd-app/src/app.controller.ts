@@ -6,10 +6,10 @@ export class AppController {
 
   @Get()
   getHello(): any {
-    return { message: "The application is running !" };
+    return { message: 'The application is running !' };
   }
 
-  @Get("_health")
+  @Get('_health')
   @HttpCode(204)
   healthCheck() {}
 }

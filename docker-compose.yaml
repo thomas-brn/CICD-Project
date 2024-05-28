@@ -1,27 +1,31 @@
 version: '3.8'
 
 services:
-  db:
-    image: postgres:latest
-    restart: always
-    env_file:
-      - compose.env
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+   db:
+      image: postgres:latest
+      restart: always
+      environment:
+         - POSTGRES_DB=cicd-project
+         - POSTGRES_USER=${CITY_API_DB_USER}
+         - POSTGRES_PASSWORD=${CITY_API_DB_PWD}
+      env_file:
+         - compose.env
+      volumes:
+         - pgdata:/var/lib/postgresql/data
 
-  app:
-    build:
-      context: ./cicd-app
-      dockerfile: Dockerfile
-      tags:
-        - baraly/plannify-back:0.1.0
-    restart: always
-    ports:
-      - "3000:3000"
-    depends_on:
-      - db
-    env_file:
-      - compose.env
+   app:
+      build:
+         context: ./cicd-app
+         dockerfile: Dockerfile
+         tags:
+            - cicd-project-back:0.1.0
+      restart: always
+      ports:
+         - '3000:2022'
+      depends_on:
+         - db
+      env_file:
+         - compose.env
 
 volumes:
-  pgdata:
+   pgdata:

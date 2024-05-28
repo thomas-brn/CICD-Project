@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.gitignore
+Dockerfile
+readme.md
+.env
+.env.example
+compose.env.example
+compose.yaml
+README.md

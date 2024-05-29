@@ -16,7 +16,7 @@ export class CityService {
     return await prisma.city.findMany();
   }
 
-  async findOne(id: number): Promise<City> {
+  async findOne(id: number): Promise<City | null> {
     return await prisma.city.findUnique({
       where: {
         id: id,

@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 
 // Configuration de la connexion à la base de données
 const pool = new Pool({
-    connectionString: 'postgresql://thomas:password@172.20.0.2:5432/cicd_db'
+  connectionString: 'postgresql://thomas:password@172.20.0.2:5432/cicd_db',
 });
 
 // Fonction pour créer la table
@@ -22,9 +22,9 @@ async function createTable() {
 
   try {
     await pool.query(query);
-    console.log("Table created successfully.");
+    console.log('Table created successfully.');
   } catch (err) {
-    console.error("Error creating table:", err.stack);
+    console.error('Error creating table:', err.stack);
   }
 }
 
@@ -42,8 +42,17 @@ async function loadJsonData(filePath) {
 
 // Fonction pour insérer un enregistrement dans la base de données
 async function insertRecord(data) {
-  const query = 'INSERT INTO city (id, department_code, insee_code, zip_code, name, lat, lon) VALUES ($1, $2, $3, $4, $5, $6, $7)';
-  const values = [data.id, data.department_code, data.insee_code, data.zip_code, data.name, data.lat, data.lon];
+  const query =
+    'INSERT INTO city (id, department_code, insee_code, zip_code, name, lat, lon) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+  const values = [
+    data.id,
+    data.department_code,
+    data.insee_code,
+    data.zip_code,
+    data.name,
+    data.lat,
+    data.lon,
+  ];
   try {
     await pool.query(query, values);
     console.log(`Record inserted: ${data.id}`);

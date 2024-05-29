@@ -24,3 +24,5 @@ COPY --from=base /cicd/package.json ./package.json
 
 # Starting our application
 CMD ["node", "dist/main.js"]
+
+# docker run --name cicd-project-postgres -e POSTGRES_DB=cicd-project -e POSTGRES_USER=cicd -e POSTGRES_PASSWORD=cicd -p 5432:5432 -d postgres

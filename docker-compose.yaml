@@ -3,7 +3,6 @@ version: '3.8'
 services:
    db:
       image: postgres:latest
-      restart: always
       environment:
          - POSTGRES_DB=cicd-project
          - POSTGRES_USER=${CITY_API_DB_USER}
@@ -19,7 +18,6 @@ services:
          dockerfile: Dockerfile
          tags:
             - cicd-project-back:0.1.0
-      restart: always
       ports:
          - '3000:2022'
       depends_on:

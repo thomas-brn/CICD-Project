@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
-import prisma from 'src/utils/prisma.service';
+import prisma from '../utils/prisma.service';
 import { City } from '@prisma/client';
 
 @Injectable()

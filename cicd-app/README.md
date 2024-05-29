@@ -19,25 +19,29 @@ https://github.com/thomasbroine/CICD-Project.git
 ### 2. Lancer un conteneur Postgres en local
 
 ```bash 
- docker run --name cicd-project-postgres -e POSTGRES_DB=cicd-project -e POSTGRES_USER=cicd -e POSTGRES_PASSWORD=cicd -p 5432:5432 -d postgre
+ docker run --name cicd-project-postgres -e POSTGRES_DB=cicd-project -e POSTGRES_USER=cicd -e POSTGRES_PASSWORD=cicd -p 5432:5432 -d postgres
  ```
-### 3. Installer les dépendances
+
+### 3. Renseigner le fichier de variables d'environnements .env
+ A l'aide du fichier .env.template, créer le fichier .env et renseigner les variables d'environnement. 
+
+### 4. Installer les dépendances
 ```bash 
 pnpm install
 ```
-### 4. Générer les modèles Prisma
+### 5. Générer les modèles Prisma
 
 ``` bash
  npx prisma generate
  ```
 
-### 5. Créer et appliquer les migrations
+### 6. Créer et appliquer les migrations
 
 ```bash
  npx prisma migrate dev
  ```
 
-### 6. Lancer l'application
+### 7. Lancer l'application
 
 ```bash
  pnpm run start:dev
@@ -49,7 +53,15 @@ Vous pouvez tester les différentes fonctionnalités via cette interface ou en u
 
 ## Commandes utiles
 ### Lancer les tests :
+Vérifier que le containeur Postgres est lancé et que les crédentials sont bien renseignés dans le .env :
 ```bash
+docker ps
+```
+Écrivez un workflow GitHub Actions ci pour qu'un linter soit exécuté à chaque push.
+
+
+```bash
+cd cicd-app
 pnpm run test
 ```
 ### Construire l'application pour la production :

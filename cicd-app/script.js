@@ -66,5 +66,5 @@ async function insertRecord(data) {
 // Créer la table
 createTable().then(() => {
   // Charger les données JSON après la création de la table
-  loadJsonData('cities.json');
+  loadJsonData('../cities.json');
 });

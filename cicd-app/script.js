@@ -8,8 +8,9 @@ const pool = new Pool({
 
 // Fonction pour créer la table
 async function createTable() {
-  const query = `
-    CREATE TABLE IF NOT EXISTS city (
+  const dropQuery = 'DROP TABLE IF EXISTS city';
+  const createQuery = `
+    CREATE TABLE city (
       id INT PRIMARY KEY,
       department_code VARCHAR(255),
       insee_code VARCHAR(255),
@@ -21,10 +22,11 @@ async function createTable() {
   `;
 
   try {
-    await pool.query(query);
-    console.log('Table created successfully.');
+    await pool.query(dropQuery);
+    await pool.query(createQuery);
+    console.log('Table recreated successfully.');
   } catch (err) {
-    console.error('Error creating table:', err.stack);
+    console.error('Error recreating table:', err.stack);
   }
 }
 

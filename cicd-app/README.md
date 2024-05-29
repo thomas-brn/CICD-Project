@@ -1,73 +1,117 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# CI/CD
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prérequis
+Node.js (version 14 ou supérieure)  
+PNPM (gestionnaire de paquets)  
+Docker  
+Prisma CLI
 
 ## Installation
 
-```bash
-$ pnpm install
+### 1. Clonez ce dépôt sur votre machine locale :
+``` bash
+https://github.com/thomasbroine/CICD-Project.git
 ```
 
-## Running the app
+### 2. Lancer un conteneur Postgres en local
+
+```bash 
+ docker run --name cicd-project-postgres -e POSTGRES_DB=cicd-project -e POSTGRES_USER=cicd -e POSTGRES_PASSWORD=cicd -p 5432:5432 -d postgre
+ ```
+### 3. Installer les dépendances
+```bash 
+pnpm install
+```
+### 4. Générer les modèles Prisma
+
+``` bash
+ npx prisma generate
+ ```
+
+### 5. Créer et appliquer les migrations
 
 ```bash
-# development
-$ pnpm run start
+ npx prisma migrate dev
+ ```
 
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
-```
-
-## Test
+### 6. Lancer l'application
 
 ```bash
-# unit tests
-$ pnpm run test
+ pnpm run start:dev
+ ```
 
-# e2e tests
-$ pnpm run test:e2e
+## Utilisation
+Après avoir démarré l'application, elle sera disponible à l'adresse http://localhost:3000. 
+Vous pouvez tester les différentes fonctionnalités via cette interface ou en utilisant un outil comme Apidog pour interagir avec l'API.
 
-# test coverage
-$ pnpm run test:cov
+## Commandes utiles
+### Lancer les tests :
+```bash
+pnpm run test
+```
+### Construire l'application pour la production :
+```bash
+pnpm run build
+```
+### Démarrer l'application en mode production :
+```bash
+pnpm run start
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Structure du projet
 
-## Stay in touch
+Une description rapide des principaux dossiers et fichiers du projet :
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+src/: Contient le code source de l'application.  
+prisma/: Contient le fichier schema.prisma et les migrations de la base de données.  
+Dockerfile: Définition de l'image Docker pour le projet.  
+docker-compose.yml: Configuration pour démarrer les services requis avec Docker Compose (si applicable). 
+```
+.
+├── cicd-app
+│   ├── dist
+│   │   └── ...
+│   ├── Dockerfile
+│   ├── nest-cli.json
+│   ├── node_modules
+│   │   └── ...
+│   ├── package.json
+│   ├── pnpm-lock.yaml
+│   ├── prisma
+│   │   ├── migrations
+│   │   │   ├── 20240529115631_dev
+│   │   │   │   └── migration.sql
+│   │   │   └── migration_lock.toml
+│   │   └── schema.prisma
+│   ├── README.md
+│   ├── src
+│   │   ├── app.controller.spec.ts
+│   │   ├── app.controller.ts
+│   │   ├── app.module.ts
+│   │   ├── city
+│   │   │   ├── city.controller.spec.ts
+│   │   │   ├── city.controller.ts
+│   │   │   ├── city.module.ts
+│   │   │   ├── city.service.spec.ts
+│   │   │   ├── city.service.ts
+│   │   │   └── dto
+│   │   │       ├── create-city.dto.ts
+│   │   │       └── update-city.dto.ts
+│   │   ├── main.ts
+│   │   └── utils
+│   │       └── prisma.service.ts
+│   ├── test
+│   │   ├── app.e2e-spec.ts
+│   │   └── jest-e2e.json
+│   ├── tsconfig.build.json
+│   └── tsconfig.json
+├── cicd.md
+├── cities.json
+├── compose.env
+├── compose.env.example
+└── docker-compose.yaml
+```

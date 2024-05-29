@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CityService } from './city.service';
-import { PrismaClient } from '@prisma/client';
+import { City, PrismaClient } from '@prisma/client';
 
 describe('CityService', () => {
   let cityService: CityService;
@@ -19,28 +19,39 @@ describe('CityService', () => {
     expect(cityService).toBeDefined();
   });
 
+  beforeEach(async () => {
+    await prisma.city.deleteMany();
+  });
+
   afterAll(async () => {
     await prisma.$disconnect();
   });
 
-  // it('should create a new user', async () => {
-  //   const user = await service.createUser({
-  //     email: 'test@example.com',
-  //     name: 'Test User',
-  //   });
+  it('should create a new city', async () => {
+    const user = await cityService.create({
+      department_code: "34",
+      insee_code: "028392",
+      zip_code: "34000",
+      name: "Montpellier",
+      lat: 327383,
+      lon: 2983039
+    });
 
-  //   expect(user).toBeDefined();
-  //   expect(user.email).toBe('test@example.com');
-  // });
+    expect(user).toBeDefined();
+  });
 
-  // it('should retrieve a user by email', async () => {
-  //   await service.createUser({
-  //     email: 'test@example.com',
-  //     name: 'Test User',
-  //   });
+  it('should retrieve a list of cities', async () => {
+    await cityService.create({
+      department_code: "34",
+      insee_code: "028392",
+      zip_code: "34000",
+      name: "Montpellier",
+      lat: 327383,
+      lon: 2983039
+    });
 
-  //   const user = await service.findUserByEmail('test@example.com');
-  //   expect(user).toBeDefined();
-  //   expect(user.email).toBe('test@example.com');
-  // });
+    const cities: City[] = await cityService.findAll();
+    expect(cities).toBeDefined();
+    expect(cities.length).toBe(1);
+  });
 });

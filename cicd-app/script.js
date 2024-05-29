@@ -3,7 +3,7 @@ const { Pool } = require('pg');
 
 // Configuration de la connexion à la base de données
 const pool = new Pool({
-  connectionString: 'postgresql://thomas:password@172.20.0.2:5432/cicd_db',
+  connectionString: 'postgresql://{user}:{password}@{ip_db}:5432/{db_name}',
 });
 
 // Fonction pour créer la table

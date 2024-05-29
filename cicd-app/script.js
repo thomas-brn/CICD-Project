@@ -9,7 +9,7 @@ const pool = new Pool({
 // Fonction pour créer la table
 async function createTable() {
   const query = `
-    CREATE TABLE IF NOT EXISTS cities (
+    CREATE TABLE IF NOT EXISTS city (
       id INT PRIMARY KEY,
       department_code VARCHAR(255),
       insee_code VARCHAR(255),
@@ -42,7 +42,7 @@ async function loadJsonData(filePath) {
 
 // Fonction pour insérer un enregistrement dans la base de données
 async function insertRecord(data) {
-  const query = 'INSERT INTO cities (id, department_code, insee_code, zip_code, name, lat, lon) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+  const query = 'INSERT INTO city (id, department_code, insee_code, zip_code, name, lat, lon) VALUES ($1, $2, $3, $4, $5, $6, $7)';
   const values = [data.id, data.department_code, data.insee_code, data.zip_code, data.name, data.lat, data.lon];
   try {
     await pool.query(query, values);

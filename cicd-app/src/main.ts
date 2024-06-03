@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
+
 import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const CITY_API_ADDR = process.env.CITY_API_ADDR || '37.37.192.0';

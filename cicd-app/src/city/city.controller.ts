@@ -9,10 +9,11 @@ import {
   HttpStatus,
   HttpException,
 } from '@nestjs/common';
+import { City } from '@prisma/client';
+
 import { CityService } from './city.service';
 import { CreateCityDto } from './dto/create-city.dto';
 import { UpdateCityDto } from './dto/update-city.dto';
-import { City } from '@prisma/client';
 
 @Controller('city')
 export class CityController {
@@ -41,13 +42,13 @@ export class CityController {
     }
     return this.cityService.update(+id, updateCityDto);
   }
-  
+
   @Delete(':id')
   async remove(@Param('id') id: string) {
-  const city: City | null = await this.cityService.findOne(+id);
-  if (!city) {
-    throw new HttpException('City not found', HttpStatus.NOT_FOUND);
-  }
+    const city: City | null = await this.cityService.findOne(+id);
+    if (!city) {
+      throw new HttpException('City not found', HttpStatus.NOT_FOUND);
+    }
     return this.cityService.remove(+id);
   }
 }

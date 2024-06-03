@@ -1,7 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
+
+import { AppController } from './app.controller';
 
 describe('AppController', () => {
   let app: INestApplication;
@@ -20,8 +21,6 @@ describe('AppController', () => {
   });
 
   it('should be health check', () => {
-    return request(app.getHttpServer())
-      .get('/_health')
-      .expect(204);
+    return request(app.getHttpServer()).get('/_health').expect(204);
   });
 });

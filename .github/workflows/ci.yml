@@ -30,6 +30,8 @@ jobs:
            with:
               images: |
                  ghcr.io/${{ github.repository }}
+              tags: |
+                 type=raw, value=latest
 
          - name: Build and push Docker images
            id: push

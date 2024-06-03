@@ -9,9 +9,16 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create env file
+        run: |
+          echo POSTGRES_DB=cicd-project >> compose.env
+          echo CITY_API_DB_USER=${{ secrets.CITY_API_DB_USER }} >> compose.env
+          echo CITY_API_DB_PWD=${{ secrets.CITY_API_DB_PWD }} >> compose.env
+
       - name: Set up Docker Compose
         run: docker-compose up -d
         env:
+          POSTGRES_DB: cicd-project
           CITY_API_DB_USER: ${{ secrets.CITY_API_DB_USER }}
           CITY_API_DB_PWD: ${{ secrets.CITY_API_DB_PWD }}
 

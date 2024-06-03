@@ -1,5 +1,5 @@
-name: CI with Docker
-run-name: Up PostgreSQL and run tests
+name: Postgres
+run-name: Run tests with Postgres database
 on: [push]
 
 jobs:

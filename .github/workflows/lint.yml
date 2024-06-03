@@ -1,5 +1,5 @@
 name: Lint
-run-name: Linter
+run-name: Lint the code
 
 on:
   push:

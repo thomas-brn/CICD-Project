@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { City, PrismaClient } from '@prisma/client';
 
 import { CityService } from './city.service';
-import { City, PrismaClient } from '@prisma/client';
 
 describe('CityService', () => {
   let cityService: CityService;
@@ -30,12 +30,12 @@ describe('CityService', () => {
 
   it('should create a new city', async () => {
     const user = await cityService.create({
-      department_code: "34",
-      insee_code: "028392",
-      zip_code: "34000",
-      name: "Montpellier",
+      department_code: '34',
+      insee_code: '028392',
+      zip_code: '34000',
+      name: 'Montpellier',
       lat: 327383,
-      lon: 2983039
+      lon: 2983039,
     });
 
     expect(user).toBeDefined();
@@ -43,12 +43,12 @@ describe('CityService', () => {
 
   it('should retrieve a list of cities', async () => {
     await cityService.create({
-      department_code: "34",
-      insee_code: "028392",
-      zip_code: "34000",
-      name: "Montpellier",
+      department_code: '34',
+      insee_code: '028392',
+      zip_code: '34000',
+      name: 'Montpellier',
       lat: 327383,
-      lon: 2983039
+      lon: 2983039,
     });
 
     const cities: City[] = await cityService.findAll();

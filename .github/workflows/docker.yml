@@ -39,7 +39,6 @@ jobs:
         env:
           DATABASE_URL: postgres://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project
 
-      - name: Clean up
-        if: always()
-        run: docker stop postgres
-
+      - name: Run tests
+        run: npm test
+        working-directory: ./cicd-app

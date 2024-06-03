@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { PrometheusModule } from '@willsoto/nestjs-prometheus';
 
 import { AppController } from './app.controller';
 import { CityModule } from './city/city.module';
@@ -11,7 +12,9 @@ import { CityModule } from './city/city.module';
       isGlobal: true,
     }),
     CityModule,
+    PrometheusModule.register(),
   ],
+
   controllers: [AppController],
   providers: [],
 })

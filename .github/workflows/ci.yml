@@ -53,5 +53,8 @@ jobs:
              curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
          - name: Scan the Docker image
+           env:
+             IMAGE: ghcr.io/${{ github.repository }}:${{ steps.push.outputs.digest }}
            run: |
-             trivy image ghcr.io/${{ github.repository }}:${{ steps.meta.outputs.tags }}
+             echo "Scanning image $IMAGE"
+             trivy image $IMAGE

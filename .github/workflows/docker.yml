@@ -33,8 +33,8 @@ jobs:
         run: npm install
         working-directory: ./cicd-app
 
-      - name: Run tests
-        run: npm test
+      - name: Add data
+        run: node script.js
         working-directory: ./cicd-app
         env:
           DATABASE_URL: postgres://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project

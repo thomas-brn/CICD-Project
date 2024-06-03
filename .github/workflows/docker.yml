@@ -3,29 +3,43 @@ run-name: ${{ github.actor }} test une CI avec Docker
 on: [push]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: cicd-project
+          POSTGRES_USER: ${{ secrets.CITY_API_DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.CITY_API_DB_PWD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Create env file
-        run: |
-          echo POSTGRES_DB=cicd-project >> compose.env
-          echo CITY_API_DB_USER=${{ secrets.CITY_API_DB_USER }} >> compose.env
-          echo CITY_API_DB_PWD=${{ secrets.CITY_API_DB_PWD }} >> compose.env
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
 
-      - name: Set up Docker Compose
-        run: docker-compose up -d
-        env:
-          POSTGRES_DB: cicd-project
-          CITY_API_DB_USER: ${{ secrets.CITY_API_DB_USER }}
-          CITY_API_DB_PWD: ${{ secrets.CITY_API_DB_PWD }}
       - name: Install dependencies
         run: npm install
-        working-directory: cicd-app
-      - name: Script to fill the database
-        run: node script.js
-        working-directory: cicd-app
-      - name: Shutdown Docker Compose
-        run: docker-compose down
+        working-directory: ./cicd-app
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./cicd-app
+        env:
+          DATABASE_URL: postgres://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project
+
+      - name: Clean up
+        if: always()
+        run: docker stop postgres
+

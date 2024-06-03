@@ -1,5 +1,5 @@
 name: CI with Docker
-run-name: ${{ github.actor }} test une CI avec Docker
+run-name: Up PostgreSQL and run tests
 on: [push]
 
 jobs:
@@ -33,14 +33,6 @@ jobs:
         run: npm install
         working-directory: ./cicd-app
 
-      - name: Add data
-        run: node script.js
-        working-directory: ./cicd-app
-        env:
-          DATABASE_URL: postgres://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project
-
       - name: Run tests
-        run: npm test
+        run: npm run test
         working-directory: ./cicd-app
-        env:
-          CITY_API_DB_URL: postgres://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project

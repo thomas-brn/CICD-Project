@@ -1,13 +1,13 @@
 name: Lint
-run-name: ${{ github.actor }} lint
+run-name: Linter
 
 on:
   push:
     branches:
-      - main
+      - "*"
   pull_request:
     branches:
-      - main
+      - "*"
 
 jobs:
   lint:

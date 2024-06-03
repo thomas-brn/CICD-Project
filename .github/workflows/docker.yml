@@ -21,6 +21,8 @@ jobs:
           POSTGRES_DB: cicd-project
           CITY_API_DB_USER: ${{ secrets.CITY_API_DB_USER }}
           CITY_API_DB_PWD: ${{ secrets.CITY_API_DB_PWD }}
-
+      - name: Script to fill the database
+        run: node script.js
+        working-directory: cicd-app
       - name: Shutdown Docker Compose
         run: docker-compose down

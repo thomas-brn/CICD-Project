@@ -1,0 +1,19 @@
+name: CI with Docker
+run-name: ${{ github.actor }} test une CI avec Docker
+on: [push]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Docker Compose
+        run: docker-compose up -d
+
+      - name: Run tests
+        run: |
+          docker-compose exec app npm test
+
+      - name: Shutdown Docker Compose
+        run: docker-compose down

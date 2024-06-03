@@ -5,8 +5,6 @@ services:
       image: postgres:latest
       environment:
          - POSTGRES_DB=cicd-project
-         - POSTGRES_USER=${CITY_API_DB_USER}
-         - POSTGRES_PASSWORD=${CITY_API_DB_PWD}
       env_file:
          - compose.env
       volumes:

@@ -4,7 +4,7 @@ run-name: ${{ github.actor }} lint
 on:
   push:
     branches:
-      - cicd-BBR
+      - main
   pull_request:
     branches:
       - main

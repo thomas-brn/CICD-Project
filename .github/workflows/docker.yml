@@ -33,6 +33,14 @@ jobs:
         run: npm install
         working-directory: ./cicd-app
 
+      - name : Init Prisma schema
+        run: npx prisma generate
+        working-directory: ./cicd-app
+
+      - name: Run migrations
+        run: npx prisma migrate dev --name init
+        working-directory: ./cicd-app
+
       - name: Run tests
         run: npm run test
         working-directory: ./cicd-app

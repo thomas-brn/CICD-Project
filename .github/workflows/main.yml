@@ -3,13 +3,14 @@ run-name: ${{ github.actor }} a fait un linter pour tester
 on: [push]
 
 jobs:
-  check-code:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
-      - run: cd cicd-app
+          node-version: '20'
+      - name: Change to cicd-app directory
+        run: cd cicd-app
       - run: npm install
-      - run: npm run lint
+      - run: npx eslint .

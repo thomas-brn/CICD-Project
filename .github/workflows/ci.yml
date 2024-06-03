@@ -54,6 +54,13 @@ jobs:
            run: |
              curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
+         - name: Log in to the Container registry
+           uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+           with:
+              registry: ghcr.io
+              username: ${{ github.actor }}
+              password: ${{ secrets.GITHUB_TOKEN }}
+
          - name: Scan the Docker image
            env:
              IMAGE: ghcr.io/thomas-brn/cicd-project:latest

@@ -42,3 +42,5 @@ jobs:
       - name: Run tests
         run: npm test
         working-directory: ./cicd-app
+        env:
+          CITY_API_DB_URL: postgres://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project

@@ -1,5 +1,5 @@
 name: linter
-run-name: ${{ github.actor }} test une CI avec Postgres
+run-name: ${{ github.actor }} a fait une CI avec un linter
 on: [push]
 
 jobs:
@@ -16,7 +16,4 @@ jobs:
       - name: Run linter
         run: npm run lint
         working-directory: cicd-app
-      - name: Up postgres
-        run: docker-compose up -d
-
       

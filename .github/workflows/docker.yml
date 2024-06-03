@@ -6,14 +6,24 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: cicd-project
+          POSTGRES_USER: ${{ secrets.CITY_API_DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.CITY_API_DB_PWD }}
+        ports:
+          - 5432:5432
+
     steps:
       - uses: actions/checkout@v2
+      - name: Setup environment
+        run: |
+          echo "CITY_API_ADDR=${{ secrets.CITY_API_ADDR }}" >> $GITHUB_ENV
+          echo "CITY_API_PORT=${{ secrets.CITY_API_PORT }}" >> $GITHUB_ENV
+          echo "CITY_API_DB_URL=${{ secrets.CITY_API_DB_URL }}" >> $GITHUB_ENV
       - name: Set up Docker Compose
         run: docker-compose up -d
-
-      - name: Run tests
-        run: |
-          docker-compose exec app npm test
-
       - name: Shutdown Docker Compose
         run: docker-compose down

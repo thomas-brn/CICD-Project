@@ -1,6 +1,20 @@
 import { NestFactory } from '@nestjs/core';
+import { exec } from 'child_process';
 
 import { AppModule } from './app.module';
+
+async function prismaMigration(): Promise<void> {
+  return new Promise((resolve, reject) => {
+      exec('npm run migrate:prod', (error, stdout) => {
+          if (error) {
+              console.log(error);
+              reject(error);
+          }
+          console.log(stdout);
+          resolve();
+      });
+  });
+}
 
 async function bootstrap() {
   const CITY_API_ADDR = process.env.CITY_API_ADDR || '37.37.192.0';
@@ -15,8 +29,9 @@ async function bootstrap() {
     );
   }
 
+  await prismaMigration();
+
   const app = await NestFactory.create(AppModule);
-  console.log(CITY_API_PORT, CITY_API_ADDR);
   await app.listen(CITY_API_PORT, CITY_API_ADDR);
   console.log(`Server is running on ${CITY_API_ADDR}:${CITY_API_PORT}`);
 }

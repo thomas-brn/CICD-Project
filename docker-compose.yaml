@@ -3,6 +3,11 @@ version: '3.8'
 services:
    db:
       image: postgres:latest
+      healthcheck:
+         test: ["CMD", "pg_isready", "-U", "postgres"]
+         interval: 5s
+         timeout: 5s
+         retries: 5
       environment:
          - POSTGRES_DB=cicd-project
       env_file:
@@ -19,7 +24,8 @@ services:
       ports:
          - '3000:2022'
       depends_on:
-         - db
+         db:
+            condition: service_healthy
       env_file:
          - compose.env
 

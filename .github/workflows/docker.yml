@@ -10,7 +10,6 @@ jobs:
       postgres:
         image: postgres:latest
         env:
-          CITY_API_DB_URL: ${{ secrets.CITY_API_DB_URL }}
           POSTGRES_DB: cicd-project
           POSTGRES_USER: ${{ secrets.CITY_API_DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.CITY_API_DB_PWD }}

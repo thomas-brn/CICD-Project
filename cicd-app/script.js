@@ -3,9 +3,10 @@ const { Pool } = require('pg');
 
 // Utiliser des variables d'environnement pour définir la chaîne de connexion
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL || 'postgresql://user:password@localhost:5432/dbname',
+  connectionString:
+    process.env.DATABASE_URL ||
+    'postgresql://user:password@localhost:5432/dbname',
 });
-
 
 // Fonction pour créer la table
 async function createTable() {
@@ -33,12 +34,19 @@ async function createTable() {
 
 // Fonction pour charger les données JSON
 async function loadJsonData(filePath) {
+  await createTable();
+
   const fileData = fs.readFileSync(filePath);
   const records = JSON.parse(fileData);
 
-  for (let record of records) {
-    await insertRecord(record);
-  }
+  let promises = records.map(async (record, index) => {
+    if (index % 1000 === 0) {
+      console.log(`Inserting record ${index}...`);
+    }
+    await insertRecord(record); 
+  });
+
+  await Promise.all(promises);
 
   console.log('All records have been inserted.');
 }
@@ -58,7 +66,6 @@ async function insertRecord(data) {
   ];
   try {
     await pool.query(query, values);
-    console.log(`Record inserted: ${data.id}`);
   } catch (err) {
     console.error(`Error inserting record ${data.id}:`, err.stack);
   }

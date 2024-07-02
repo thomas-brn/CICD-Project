@@ -45,10 +45,6 @@ jobs:
         run: npx prisma migrate dev --name init
         working-directory: ./cicd-app
 
-      - name: Load data into the database
-        run: node script.js
-        working-directory: ./cicd-app
-
       - name: Run tests
         run: npm run test
         working-directory: ./cicd-app

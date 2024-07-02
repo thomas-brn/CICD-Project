@@ -5,14 +5,14 @@ import { AppModule } from './app.module';
 
 async function prismaMigration(): Promise<void> {
   return new Promise((resolve, reject) => {
-      exec('npm run migrate:prod', (error, stdout) => {
-          if (error) {
-              console.log(error);
-              reject(error);
-          }
-          console.log(stdout);
-          resolve();
-      });
+    exec('npm run migrate:prod', (error, stdout) => {
+      if (error) {
+        console.log(error);
+        reject(error);
+      }
+      console.log(stdout);
+      resolve();
+    });
   });
 }
 

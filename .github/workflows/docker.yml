@@ -1,0 +1,50 @@
+name: Postgres
+run-name: Run tests with Postgres database
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB: cicd-project
+          POSTGRES_USER: ${{ secrets.CITY_API_DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.CITY_API_DB_PWD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./cicd-app
+
+      - name: Set DB URL
+        run: echo "CITY_API_DB_URL=postgresql://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project" >> $GITHUB_ENV
+        working-directory: ./cicd-app
+
+      - name : Init Prisma schema
+        run: npx prisma generate
+        working-directory: ./cicd-app
+
+      - name: Run migrations
+        run: npx prisma migrate dev --name init
+        working-directory: ./cicd-app
+
+      - name: Run tests
+        run: npm run test
+        working-directory: ./cicd-app

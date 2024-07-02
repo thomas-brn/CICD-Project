@@ -42,6 +42,15 @@ describe('CityService', () => {
   });
 
   it('should retrieve a list of cities', async () => {
+    await cityService.create({
+      department_code: '34',
+      insee_code: '028392',
+      zip_code: '34000',
+      name: 'Montpellier',
+      lat: 327383,
+      lon: 2983039,
+    });
+
     const cities: City[] = await cityService.findAll();
     expect(cities).toBeDefined();
   });

@@ -1,5 +1,5 @@
 name: Publish Docker image
-
+run-name: Push Docker image to multiple registries
 on:
    push:
       branches:

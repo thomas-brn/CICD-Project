@@ -1,10 +1,35 @@
 const fs = require('fs');
 const { Pool } = require('pg');
 
-// Configuration de la connexion à la base de données
+// Utiliser des variables d'environnement pour définir la chaîne de connexion
 const pool = new Pool({
-  connectionString: 'postgresql://{user}:{password}@{ip_db}:5432/{db_name}',
+  connectionString: process.env.DATABASE_URL || 'postgresql://user:password@localhost:5432/dbname',
 });
+
+
+// Fonction pour créer la table
+async function createTable() {
+  const dropQuery = 'DROP TABLE IF EXISTS city';
+  const createQuery = `
+    CREATE TABLE city (
+      id INT PRIMARY KEY,
+      department_code VARCHAR(255),
+      insee_code VARCHAR(255),
+      zip_code VARCHAR(255),
+      name VARCHAR(255),
+      lat DECIMAL(9,6),
+      lon DECIMAL(9,6)
+    )
+  `;
+
+  try {
+    await pool.query(dropQuery);
+    await pool.query(createQuery);
+    console.log('Table recreated successfully.');
+  } catch (err) {
+    console.error('Error recreating table:', err.stack);
+  }
+}
 
 // Fonction pour charger les données JSON
 async function loadJsonData(filePath) {

@@ -33,6 +33,10 @@ jobs:
         run: npm install
         working-directory: ./cicd-app
 
+      - name: Set DB URL
+        run: echo "CITY_API_DB_URL=postgresql://${{ secrets.CITY_API_DB_USER }}:${{ secrets.CITY_API_DB_PWD }}@localhost:5432/cicd-project" >> $GITHUB_ENV
+        working-directory: ./cicd-app
+
       - name : Init Prisma schema
         run: npx prisma generate
         working-directory: ./cicd-app

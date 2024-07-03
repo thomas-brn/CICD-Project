@@ -71,6 +71,42 @@ npx prisma migrate dev
 ### 7. Lancer l'application
 
 ```bash
+ pnpm run start:dev
+```
+
+## Utilisation
+
+Après avoir démarré l'application, elle sera disponible à l'adresse http://localhost:3000.
+Vous pouvez tester les différentes fonctionnalités via cette interface ou en utilisant un outil comme Apidog pour interagir avec l'API.
+
+`POST /city` pour créer une ville, dans la base de données, donnée le body la ville au format JSON comportant les données ci-dessous: 
+```
+id, un entier non signé non nul, clé primaire de la colonne ;
+department_code, une chaîne de caractères non nulle ;
+insee_code, une chaîne de caractères ;  
+zip_code, une chaîne de caractères ;  
+name, une chaîne de caractères non nulle ;  
+lat, un flottant non nul ;  
+lon, un flottant non nul.  
+```
+`GET /city` pour voir la liste des villes au format JSON  
+`GET /_health` doit retourner un code 204
+
+
+## Commandes utiles
+
+### Lancer les tests :
+
+Vérifier que le containeur Postgres est lancé et que les crédentials sont bien renseignés dans le .env :
+
+```bash
+docker ps
+```
+
+Écrivez un workflow GitHub Actions ci pour qu'un linter soit exécuté à chaque push.
+
+```bash
+cd cicd-app
 pnpm run test
 ```
 
@@ -87,58 +123,39 @@ pnpm run build
 ```bash
 pnpm run start
 ```
+## Déploiement 
 
-## Structure du projet
+### Prérequis
+- Avoir un cluster Kubernetes disponible 
+- Avoir helm et kubectl installé
 
-Une description rapide des principaux dossiers et fichiers du projet :
+## Etapes
 
-src/: Contient le code source de l'application.  
-prisma/: Contient le fichier schema.prisma et les migrations de la base de données.  
-Dockerfile: Définition de l'image Docker pour le projet.  
-docker-compose.yml: Configuration pour démarrer les services requis avec Docker Compose (si applicable).
+- Installer Postgres dans le cluster
+
+```bash
+cd cicd-app/charts
+helm install postgres oci://registry-1.docker.io/bitnamicharts/postgresql -f values.postgres.yaml
+ ```
+- Insérer les données dans la Postgres
+
+```bash
+kubectl port-forward service/postgres-postgresql 5432
+
+cd <project-root>
+
+DATABASE_URL="postgresql://cicd:cicd@localhost:5432/cicd-project" node ./script.js
 
 ```
-.
-├── cicd-app
-│   ├── dist
-│   │   └── ...
-│   ├── Dockerfile
-│   ├── nest-cli.json
-│   ├── node_modules
-│   │   └── ...
-│   ├── package.json
-│   ├── pnpm-lock.yaml
-│   ├── prisma
-│   │   ├── migrations
-│   │   │   ├── 20240529115631_dev
-│   │   │   │   └── migration.sql
-│   │   │   └── migration_lock.toml
-│   │   └── schema.prisma
-│   ├── README.md
-│   ├── src
-│   │   ├── app.controller.spec.ts
-│   │   ├── app.controller.ts
-│   │   ├── app.module.ts
-│   │   ├── city
-│   │   │   ├── city.controller.spec.ts
-│   │   │   ├── city.controller.ts
-│   │   │   ├── city.module.ts
-│   │   │   ├── city.service.spec.ts
-│   │   │   ├── city.service.ts
-│   │   │   └── dto
-│   │   │       ├── create-city.dto.ts
-│   │   │       └── update-city.dto.ts
-│   │   ├── main.ts
-│   │   └── utils
-│   │       └── prisma.service.ts
-│   ├── test
-│   │   ├── app.e2e-spec.ts
-│   │   └── jest-e2e.json
-│   ├── tsconfig.build.json
-│   └── tsconfig.json
-├── cicd.md
-├── cities.json
-├── compose.env
-├── compose.env.example
-└── docker-compose.yaml
+
+- Déployer l'application
+```bash
+cd cicd-app/charts
+helm install <chart_name> .
 ```
+
+- Vérification
+```bash
+kubectl port-forward <chart_name>-cicd-app 3000
+```
+Le site est sur `http://localhost:3000`

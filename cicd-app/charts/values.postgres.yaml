@@ -1,0 +1,14 @@
+# To install postgresql in your cluster, run the following command:
+# helm install postgres oci://registry-1.docker.io/bitnamicharts/postgresql -f values.postgres.yaml
+# Once installed, we need to insert the data. To do so, run the following command:
+# kubectl port-forward service/postgres-postgresql 5432
+# cd <project-root>
+# DATABASE_URL="postgresql://cicd:cicd@localhost:5432/cicd-project" node ./script.js
+# This will take some time, but eventually, the database should be populated with the data.
+
+global:
+  postgresql:
+    auth:
+      username: cicd
+      password: cicd
+      database: cicd-project

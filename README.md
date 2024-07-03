@@ -1,7 +1,5 @@
 # CI/CD
 
-## Description
-
 ## Prérequis
 
 Node.js (version 14 ou supérieure)  

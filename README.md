@@ -48,7 +48,7 @@ docker run --name cicd-project-postgres -e POSTGRES_DB=cicd-project -e POSTGRES_
 cd cicd-app
 ```
 
-A l'aide du fichier `.env.template`, créer le fichier `.env` et renseigner les variables d'environnement.
+A l'aide du fichier `.env.example`, créer le fichier `.env` et renseigner les variables d'environnement.
 
 ### 3. Installer les dépendances
 
@@ -68,10 +68,10 @@ npx prisma generate
 npx prisma migrate dev
 ```
 
-### 7. Lancer l'application
+### 7. Lancer les tests
 
 ```bash
- pnpm run start:dev
+ pnpm run test
 ```
 
 ## Utilisation
@@ -92,23 +92,6 @@ lon, un flottant non nul.
 `GET /city` pour voir la liste des villes au format JSON  
 `GET /_health` doit retourner un code 204
 
-
-## Commandes utiles
-
-### Lancer les tests :
-
-Vérifier que le containeur Postgres est lancé et que les crédentials sont bien renseignés dans le .env :
-
-```bash
-docker ps
-```
-
-Écrivez un workflow GitHub Actions ci pour qu'un linter soit exécuté à chaque push.
-
-```bash
-cd cicd-app
-pnpm run test
-```
 
 ## Commandes utiles
 
